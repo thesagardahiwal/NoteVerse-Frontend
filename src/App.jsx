@@ -6,6 +6,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import NoteState from './context/notes/NoteState'; // Import NoteState
 import Alert from './components/Alert';
 import Notes from './components/Notes'; // Import Notes
+import Login from './pages/Login';
+import SignUp from './pages/SignUp';
 
 
 function App() {
@@ -14,10 +16,10 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Alert message="This is Noteverse" />
-      <Notes/>
       <Routes>
-        <Route path="/" element={<Home />} />
-         {/* <Route path="/login" element={<Login />} /> */}
+        <Route path="/" element={<Notes/>} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="/about" element={<About />} />
       </Routes>
     </BrowserRouter>

@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {Link, useLocation} from 'react-router-dom';
+import NoteContext from '../context/notes/NoteContext';
 function Navbar() {
   let location = useLocation();
-useEffect(() => {
-  // console.log(location.pathname);
-})
+   const { setSearchQuery } = useContext(NoteContext);
     return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark ">
@@ -31,7 +30,7 @@ useEffect(() => {
               </li>
             </ul>
             <form className="d-flex" role="search">
-              <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+              <input onChange={(e) => setSearchQuery(e.target.value)} className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
               <button className="btn btn-outline-success" type="submit">Search</button>
             </form>
           </div>

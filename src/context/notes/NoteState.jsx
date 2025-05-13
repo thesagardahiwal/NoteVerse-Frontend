@@ -2,10 +2,19 @@
 import React, { useState } from "react";
 import NoteContext from "./NoteContext";
 
-const host = "http://localhost:5000"; // ✅ Define outside for consistency
-
+const host = import.meta.env.VITE_APP_API_URL
 const NoteState = (props) => {
   const [notes, setNotes] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredNotes = searchQuery
+  ? notes.filter(note => {
+    return (note.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+     note.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+     note.tag?.toLowerCase().includes(searchQuery.toLowerCase()))
+  }
+    )
+  : notes;
 
   // 📥 Get all notes
   const getNotes = async () => {
@@ -68,6 +77,7 @@ const NoteState = (props) => {
   const deleteNote = async (id) => {
     try {
       // Optimistically update UI first
+      console.log(id)
       setNotes(prevNotes => prevNotes.filter(note => note._id !== id));
 
       await fetch(`${host}/api/notes/deletenote/${id}`, {
@@ -84,7 +94,7 @@ const NoteState = (props) => {
   };
 
   return (
-    <NoteContext.Provider value={{ notes, getNotes, addNote, editNote, deleteNote }}>
+    <NoteContext.Provider value={{ notes, filteredNotes, setSearchQuery, getNotes, addNote, editNote, deleteNote }}>
       {props.children}
     </NoteContext.Provider>
   );
