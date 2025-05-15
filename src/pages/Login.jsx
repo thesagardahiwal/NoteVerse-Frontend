@@ -6,6 +6,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const push = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
@@ -22,7 +23,6 @@ function Login() {
       if (!res.ok) {
         if (res.status === 404) {
           setErrorMsg("User not found.");
-          setShowSignup(true);
         } else {
           setErrorMsg("Login failed. Please try again.");
         }
@@ -30,83 +30,51 @@ function Login() {
       }
 
       const data = await res.json();
-      console.log("Login successful:", data);
       if (data.token) {
         localStorage.setItem("token", data.token);
         push("/");
       }
-      // Redirect or store token here
     } catch (error) {
       setErrorMsg("Network error. Please try again.");
     }
   };
 
   return (
-    <div style={styles.container}>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          style={styles.input}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          style={styles.input}
-        />
-        <button type="submit" style={styles.button}>Login</button>
-        {errorMsg && <p style={styles.error}>{errorMsg}</p>}
-        <p style={styles.signup}>
-        Don't have an account? <a href="/signup">Sign up here</a>
+    <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
+      <div className="card shadow-lg p-5" style={{ width: '100%', maxWidth: '380px', borderRadius: '12px' }}>
+        <h2 className="text-center mb-4 text-primary">Login</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <input
+              type="email"
+              className="form-control shadow-sm border-0 p-3"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <input
+              type="password"
+              className="form-control shadow-sm border-0 p-3"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit" className="btn btn-primary w-100 py-2 shadow-sm border-0 mb-3">Login</button>
+          
+          {errorMsg && <div className="alert alert-danger mt-3 shadow-sm">{errorMsg}</div>}
+        </form>
+        
+        <p className="text-center mt-3">
+          Don't have an account? <a href="/signup" className="text-decoration-none text-primary">Sign up here</a>
         </p>
-      </form>
+      </div>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    maxWidth: '400px',
-    margin: '50px auto',
-    padding: '20px',
-    border: '1px solid #ccc',
-    borderRadius: '8px',
-    textAlign: 'center',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px',
-  },
-  input: {
-    padding: '10px',
-    fontSize: '16px',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-  },
-  button: {
-    padding: '10px',
-    fontSize: '16px',
-    borderRadius: '4px',
-    border: 'none',
-    backgroundColor: '#007bff',
-    color: 'white',
-    cursor: 'pointer',
-  },
-  error: {
-    color: 'red',
-    marginTop: '10px',
-  },
-  signup: {
-    marginTop: '10px',
-  },
-};
 
 export default Login;

@@ -77,7 +77,7 @@ const NoteState = (props) => {
   const deleteNote = async (id) => {
     try {
       // Optimistically update UI first
-      console.log(id)
+      // console.log(id)
       setNotes(prevNotes => prevNotes.filter(note => note._id !== id));
 
       await fetch(`${host}/api/notes/deletenote/${id}`, {

@@ -7,19 +7,17 @@ function SignUp() {
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
-  const push = useNavigate();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
     setSuccessMsg('');
-    console.log(import.meta.env.VITE_APP_API_URL)
+
     try {
-        const res = await fetch(import.meta.env.VITE_APP_API_URL + "/api/auth/createuser", {
+      const res = await fetch(import.meta.env.VITE_APP_API_URL + "/api/auth/createuser", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
       });
 
@@ -30,95 +28,63 @@ function SignUp() {
       }
 
       const data = await res.json();
-      setSuccessMsg("Signup successful! You can now login.");
+      setSuccessMsg("Signup successful! Redirecting...");
       if (data.token) {
-          localStorage.setItem('token', data.token);
-            push("/");
-      };
+        localStorage.setItem('token', data.token);
+        setTimeout(() => navigate("/"), 1500);
+      }
     } catch (error) {
       setErrorMsg("Network error. Please try again.");
     }
   };
 
   return (
-    <div style={styles.container}>
-      <h2>Sign Up</h2>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <input
-          type="text"
-          placeholder="Full Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-          style={styles.input}
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          style={styles.input}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          style={styles.input}
-        />
-        <button type="submit" style={styles.button}>Sign Up</button>
-        {errorMsg && <p style={styles.error}>{errorMsg}</p>}
-        {successMsg && <p style={styles.success}>{successMsg}</p>}
-        <p style={styles.loginLink}>
-          Already have an account? <a href="/login">Login here</a>
+    <div className="d-flex justify-content-center align-items-center vh-100 bg-gradient">
+      <div className="card shadow-lg p-5" style={{ width: '100%', maxWidth: '420px', borderRadius: '10px' }}>
+        <h2 className="text-center mb-4 text-primary">Create Account</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <input
+              type="text"
+              className="form-control shadow-sm border-0 p-3"
+              placeholder="Full Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <input
+              type="email"
+              className="form-control shadow-sm border-0 p-3"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <input
+              type="password"
+              className="form-control shadow-sm border-0 p-3"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit" className="btn btn-primary w-100 py-2 shadow-sm border-0 mb-3">Sign Up</button>
+          
+          {errorMsg && <div className="alert alert-danger mt-3 shadow-sm">{errorMsg}</div>}
+          {successMsg && <div className="alert alert-success mt-3 shadow-sm">{successMsg}</div>}
+        </form>
+
+        <p className="text-center mt-3">
+          Already have an account? <a href="/login" className="text-decoration-none text-primary">Login here</a>
         </p>
-      </form>
+      </div>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    maxWidth: '400px',
-    margin: '50px auto',
-    padding: '20px',
-    border: '1px solid #ccc',
-    borderRadius: '8px',
-    textAlign: 'center',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px',
-  },
-  input: {
-    padding: '10px',
-    fontSize: '16px',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-  },
-  button: {
-    padding: '10px',
-    fontSize: '16px',
-    borderRadius: '4px',
-    border: 'none',
-    backgroundColor: '#28a745',
-    color: 'white',
-    cursor: 'pointer',
-  },
-  error: {
-    color: 'red',
-    marginTop: '10px',
-  },
-  success: {
-    color: 'green',
-    marginTop: '10px',
-  },
-  loginLink: {
-    marginTop: '10px',
-  },
-};
 
 export default SignUp;

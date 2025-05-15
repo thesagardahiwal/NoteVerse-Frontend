@@ -1,11 +1,15 @@
 import React from 'react';
 
-const About = () => {
+const About = ({ isDarkMode }) => {
   return (
     <div className="container py-5">
       <div className="text-center mb-5">
-        <h1 className="display-4 fw-bold">Welcome to <span className="text-primary">NoteVerse</span></h1>
-        <p className="lead text-muted">Your secure, powerful, and intuitive note-taking solution.</p>
+        <h1 className="display-4 fw-bold">
+          Welcome to <span className="text-primary">NoteVerse</span>
+        </h1>
+        <p className="lead text-muted">
+          Your secure, powerful, and intuitive note-taking solution.
+        </p>
       </div>
 
       <div className="row justify-content-center mb-4">
@@ -18,9 +22,7 @@ const About = () => {
                 edit, and manage your personal notes from anywhere. Built with performance and simplicity in mind, NoteVerse
                 ensures that your ideas are captured and organized efficiently.
               </p>
-              <p>
-                It includes features such as:
-              </p>
+              <p>It includes features such as:</p>
               <ul>
                 <li>📝 Add, edit, and delete notes in real-time</li>
                 <li>🔐 Secure user authentication (JWT-based)</li>
@@ -55,7 +57,7 @@ const About = () => {
       </div>
 
       <div className="text-center mt-5">
-        <p className="text-muted">
+        <p style={{ color: isDarkMode ? 'white' : '#6c757d' }}>
           Made with 💙 by the NoteVerse Team
         </p>
       </div>
